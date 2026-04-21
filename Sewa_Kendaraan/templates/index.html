@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Kalkulator Laba Sewa Kendaraan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            padding: 20px 16px 40px;
+        }
+
+        /* Container utama seperti card mobile */
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 36px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            backdrop-filter: blur(0px);
+            transition: all 0.2s ease;
+        }
+
+        /* Header */
+        .header {
+            background: #1a2a3f;
+            padding: 24px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
+
+        /* Form area */
+        .form-card {
+            padding: 24px 20px 28px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: #1e2f3f;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        label i {
+            font-style: normal;
+            font-weight: 400;
+            color: #4b6a8b;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 24px;
+            background: #ffffff;
+            transition: 0.2s;
+            font-family: inherit;
+            outline: none;
+            color: #0f172a;
+        }
+
+        input:focus, select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+
+        .input-hint {
+            font-size: 0.7rem;
+            color: #5b6e8c;
+            margin-top: 5px;
+            margin-left: 12px;
+        }
+
+        button {
+            background: #1e3a5f;
+            color: white;
+            border: none;
+            padding: 16px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            width: 100%;
+            margin-top: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            letter-spacing: 0.3px;
+        }
+
+        button:hover {
+            background: #0f2b44;
+            transform: scale(0.98);
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        /* Hasil perhitungan */
+        .result-box {
+            background: #f8fafc;
+            margin: 0 20px 28px 20px;
+            padding: 20px;
+            border-radius: 28px;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.02);
+        }
+
+        .result-title {
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #3b5a7c;
+            margin-bottom: 18px;
+            border-left: 4px solid #3b82f6;
+            padding-left: 12px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            font-size: 1rem;
+            flex-wrap: wrap;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .result-label {
+            font-weight: 500;
+            color: #334155;
+        }
+
+        .result-value {
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: #0f172a;
+        }
+
+        .laba-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .profit {
+            color: #15803d;
+        }
+
+        .loss {
+            color: #b91c1c;
+        }
+
+        .impas {
+            color: #b45309;
+        }
+
+        .error-msg {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 14px;
+            border-radius: 28px;
+            margin: 10px 20px 20px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Catatan kaki */
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #4c6f8f;
+            padding: 16px 20px 24px;
+            border-top: 1px solid #eef2f8;
+            background: white;
+        }
+
+        /* Responsive touch */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px 12px 32px;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            input, select, button {
+                font-size: 0.95rem;
+                padding: 13px 16px;
+            }
+            .result-value {
+                font-size: 1rem;
+            }
+            .laba-value {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🚛 Kalkulator Laba Bersih</h1>
+        <p>Sewa Kendaraan • Roda 2 / Roda 4</p>
+    </div>
+
+    <div class="form-card">
+        <form method="POST">
+            <div class="input-group">
+                <label>🚗 Jenis Kendaraan</label>
+                <select name="jenis" required>
+                    <option value="Motor" {% if hasil and hasil.jenis == 'Motor' %}selected{% endif %}>🏍️ Motor (Roda Dua)</option>
+                    <option value="Mobil" {% if hasil and hasil.jenis == 'Mobil' %}selected{% endif %}>🚙 Mobil (Roda Empat)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>📊 Jumlah Kendaraan</label>
+                <input type="number" name="jumlah" step="1" min="1" value="1" required>
+            </div>
+
+            <div class="input-group">
+                <label>💰 Tarif Sewa (per hari / per kendaraan)</label>
+                <input type="number" name="tarif" step="1000" min="1000" value="75000" required>
+                <div class="input-hint">Contoh: Motor ~Rp 60-80rb, Mobil ~Rp 200-350rb</div>
+            </div>
+
+            <div class="input-group">
+                <label>📅 Lama Sewa (hari)</label>
+                <input type="number" name="lama" step="1" min="1" value="1" required>
+            </div>
+
+            <div class="input-group">
+                <label>⛽ Biaya Operasional (per hari / per kendaraan)</label>
+                <input type="number" name="biaya_operasional" step="1000" min="0" value="15000" required>
+                <div class="input-hint">Bensin, servis rutin, oli, dll</div>
+            </div>
+
+            <div class="input-group">
+                <label>🏢 Biaya Tetap (selama periode sewa)</label>
+                <input type="number" name="biaya_tetap" step="5000" min="0" value="50000" required>
+                <div class="input-hint">Parkir, gaji karyawan, sewa tempat, dll</div>
+            </div>
+
+            <button type="submit">🧮 Hitung Laba Bersih</button>
+        </form>
+    </div>
+
+    {% if hasil %}
+        {% if hasil.error %}
+            <div class="error-msg">
+                ⚠️ {{ hasil.error }}
+            </div>
+        {% else %}
+            <div class="result-box">
+                <div class="result-title">📋 RINGKASAN KEUANGAN</div>
+                <div class="result-item">
+                    <span class="result-label">🚘 Jenis Kendaraan</span>
+                    <span class="result-value">{{ hasil.jenis }}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">💵 Pendapatan Kotor</span>
+                    <span class="result-value">Rp {{ "{:,.0f}".format(hasil.pendapatan_kotor) }}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">⚙️ Total Biaya (Variabel + Tetap)</span>
+                    <span class="result-value">Rp {{ "{:,.0f}".format(hasil.total_biaya) }}</span>
+                </div>
+                <div class="result-item" style="border-bottom: none; margin-top: 8px;">
+                    <span class="result-label" style="font-weight: 800;">🏆 Laba Bersih</span>
+                    <span class="result-value laba-value 
+                        {% if hasil.laba_bersih > 0 %}profit
+                        {% elif hasil.laba_bersih < 0 %}loss
+                        {% else %}impas{% endif %}">
+                        Rp {{ "{:,.0f}".format(hasil.laba_bersih) }}
+                    </span>
+                </div>
+                <div style="text-align: center; margin-top: 12px; font-size: 0.85rem; font-weight: 500;">
+                    Status: 
+                    <span class="{% if hasil.laba_bersih > 0 %}profit{% elif hasil.laba_bersih < 0 %}loss{% else %}impas{% endif %}" style="font-weight: 700;">
+                        {{ hasil.status }}
+                    </span>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="footer-note">
+            💡 Masukkan data penyewaan kendaraan (motor/mobil) untuk menghitung laba bersih usaha Anda.
+        </div>
+    {% endif %}
+
+    {% if hasil and not hasil.error %}
+        <div class="footer-note">
+            📈 Laba = Pendapatan Kotor - (Biaya Operasional × Jml kendaraan × Hari + Biaya Tetap)
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>
